@@ -26,6 +26,7 @@ def envoyer_discord(manga_nom, chapitres):
 
     data = {
         "username": "Japscan Bot",
+        "content": "@everyone",
         "embeds": [embed]
     }
 
