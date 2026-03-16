@@ -31,9 +31,7 @@ sleep 5
 
 # --- 2. LANCEMENT DU SCRIPT PYTHON ---
 echo "Lancement du script Python..."
-
-# On se place dans le dossier du script, peu importe où il est cloné
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-python3 scan_checker_discord.py
+./venv/bin/python scan_checker_discord.py
