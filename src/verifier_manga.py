@@ -6,6 +6,11 @@ from src.config import ROUGE, RESET
 from src.logger import log_error, log_warning, log_info
 
 
+class Http500Error(Exception):
+    """Levée quand la page Japscan renvoie une erreur 5xx (à relancer plus tard)."""
+    pass
+
+
 def verifier_manga(url, dernier_lu_connu):
     # Japscan a déménagé de .vip vers .foo
     real_url = url.replace("www.japscan.vip", "www.japscan.foo")
@@ -19,6 +24,13 @@ def verifier_manga(url, dernier_lu_connu):
 
     try:
         response = requests.post(FLARESOLVERR_URL, json=payload, headers=headers)
+
+        if response.status_code >= 500 and response.status_code < 600:
+            log_error(
+                f"Requête FlareSolverr échouée pour {real_url} (status={response.status_code})"
+            )
+            print(f"{ROUGE}Erreur HTTP {response.status_code} pour {real_url}{RESET}")
+            raise Http500Error(real_url)
 
         if response.status_code != 200:
             log_error(
