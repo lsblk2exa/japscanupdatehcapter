@@ -21,4 +21,4 @@ sleep 5
 # --- 2. LANCEMENT DU SCRIPT PYTHON ---
 echo "Lancement du script Python..."
 cd ~/Documents/vscode/japscanupdatehcapter
-./venv/bin/python scan_checker.py
+python scan_checker.py
