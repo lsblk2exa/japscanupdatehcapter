@@ -68,27 +68,15 @@ def verifier_manga(url, dernier_lu_connu):
         chapitres_a_lire = []
 
         for div in all_divs:
-            liens = div.find_all("a", class_="text-dark")
-
-            lien_valide = None
-
-            for link in liens:
-                classes = link.get("class", [])
-                if "d-none" in classes:
-                    continue
-                texte_chapitre = link.text.strip()
-                if "MikeZeDev" in texte_chapitre:
-                    continue
-                lien_valide = link
-                break
-
-            if not lien_valide:
+            vrai = div.find("div", class_="d-inline", attrs={"tuec": True})
+            if not vrai:
                 continue
-            nom_chapitre = lien_valide.text.strip()
+
+            nom_chapitre = vrai.get_text(" ", strip=True).replace("\u200b", "").strip()
             if nom_chapitre.startswith("."):
                 nom_chapitre = nom_chapitre[1:].strip()
 
-            lien_relatif = lien_valide.get("href") or lien_valide.get("toto")
+            lien_relatif = vrai.get("tuec")
             lien_complet = (
                 f"https://www.japscan.foo{lien_relatif}" if lien_relatif else ""
             )
