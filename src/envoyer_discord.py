@@ -45,3 +45,26 @@ def envoyer_discord(manga_nom, chapitres):
     except Exception as e:
         log_error(f"Exception lors de l'envoi Discord pour {manga_nom} : {e}")
         print(f"Erreur envoi Discord : {e}")
+
+
+def envoyer_alerte_discord(titre, message):
+    embed = {
+        "title": f"⚠️ {titre}",
+        "description": message,
+        "color": 15548997,
+        "footer": {"text": "Japscan Bot • " + datetime.now().strftime("%d/%m %H:%M")},
+    }
+    data = {
+        "username": "Japscan Bot",
+        "content": "@here",
+        "embeds": [embed],
+    }
+    try:
+        response = requests.post(DISCORD_WEBHOOK_URL, json=data)
+        if response.status_code >= 400:
+            log_error(f"Echec de l'envoi de l'alerte Discord (status={response.status_code})")
+        else:
+            log_info(f"Alerte Discord envoyée : {titre}")
+    except Exception as e:
+        log_error(f"Exception lors de l'envoi de l'alerte Discord : {e}")
+        print(f"Erreur envoi alerte Discord : {e}")

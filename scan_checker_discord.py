@@ -3,19 +3,22 @@ import time
 from datetime import datetime
 from src.charger_suivi import charger_suivi
 from src.sauvegarde_suivi_discord import sauvegarder_suivi
-from src.verifier_manga import verifier_manga, Http500Error
+from src.verifier_manga import verifier_manga, Http500Error, ParseError
 from src.config import FICHIER_LISTE
-from src.envoyer_discord import envoyer_discord
+from src.envoyer_discord import envoyer_discord, envoyer_alerte_discord
 from src.logger import log_error, log_info
 
 
-def _traiter_manga(url, nom_manga, suivi, sauvegarde_necessaire):
+def _traiter_manga(url, nom_manga, suivi, sauvegarde_necessaire, parse_errors):
     """Traite un manga (vérif + notif + suivi). Retourne (sauvegarde_necessaire, True si 500)."""
     dernier_lu = suivi.get(url)
     try:
         nouveautes = verifier_manga(url, dernier_lu)
     except Http500Error:
         return sauvegarde_necessaire, True
+    except ParseError:
+        parse_errors.append((url, nom_manga))
+        return sauvegarde_necessaire, False
 
     if nouveautes:
         print(f"--> Nouveautés pour {nom_manga} ({len(nouveautes)})")
@@ -30,6 +33,9 @@ def _traiter_manga(url, nom_manga, suivi, sauvegarde_necessaire):
             init = verifier_manga(url, "FORCE_INIT")
         except Http500Error:
             return sauvegarde_necessaire, True
+        except ParseError:
+            parse_errors.append((url, nom_manga))
+            return sauvegarde_necessaire, False
         if init:
             suivi[url] = init[0]["nom"]
             print(f"--> {nom_manga} ajouté à la base de données.")
@@ -54,10 +60,11 @@ def main():
     suivi = charger_suivi()
     sauvegarde_necessaire = False
     urls_500 = []
+    parse_errors = []
 
     for url in mangas:
         nom_manga = url.strip("/").split("/")[-1].replace("-", " ").title()
-        sn, is_500 = _traiter_manga(url, nom_manga, suivi, sauvegarde_necessaire)
+        sn, is_500 = _traiter_manga(url, nom_manga, suivi, sauvegarde_necessaire, parse_errors)
         sauvegarde_necessaire = sn
         if is_500:
             urls_500.append((url, nom_manga))
@@ -66,8 +73,17 @@ def main():
         print(f"\nRelance des {len(urls_500)} page(s) en erreur 500 dans 10 s...")
         time.sleep(10)
         for url, nom_manga in urls_500:
-            sn, _ = _traiter_manga(url, nom_manga, suivi, sauvegarde_necessaire)
+            sn, _ = _traiter_manga(url, nom_manga, suivi, sauvegarde_necessaire, parse_errors)
             sauvegarde_necessaire = sauvegarde_necessaire or sn
+
+    if parse_errors:
+        noms = "\n".join(f"- {nom}" for _, nom in parse_errors[:15])
+        extra = f"\n… et {len(parse_errors) - 15} autre(s)" if len(parse_errors) > 15 else ""
+        envoyer_alerte_discord(
+            "Parsing Japscan cassé",
+            f"La structure HTML semble avoir changé : **{len(parse_errors)} manga(s)** "
+            f"n'ont pas pu être parsés. Il faut mettre à jour `verifier_manga.py`.\n\n{noms}{extra}",
+        )
 
     if sauvegarde_necessaire:
         sauvegarder_suivi(suivi)
