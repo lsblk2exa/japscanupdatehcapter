@@ -56,3 +56,17 @@
 [2026-04-14 15:21:41] INFO - Aucun nouveau chapitre trouvé pour https://www.japscan.foo/manga/kage-no-jitsuryokusha-ni-naritakute/
 [2026-04-14 15:21:55] INFO - Notification Discord envoyée pour Kingdom
 [2026-04-14 15:21:55] INFO - 2 nouveau(x) chapitre(s) trouvé(s) pour Kingdom (https://www.japscan.foo/manga/kingdom/)
+[2026-04-15 09:45:05] ERROR - Aucun chapitre extrait pour https://www.japscan.foo/manhwa/hero-killer/ (slug=hero-killer ; HTML sauvegardé dans /home/lustucru/Documents/vscode/japscanupdatehcapter/src/logs/html_debug/www.japscan.foo_manhwa_hero-killer.html)
+[2026-04-15 09:45:22] ERROR - Aucun chapitre extrait pour https://www.japscan.foo/manga/berserk/ (slug=berserk ; HTML sauvegardé dans /home/lustucru/Documents/vscode/japscanupdatehcapter/src/logs/html_debug/www.japscan.foo_manga_berserk.html)
+[2026-04-15 09:45:35] ERROR - Aucun chapitre extrait pour https://www.japscan.foo/manhwa/player-who-returned-10-000-years-later/ (slug=player-who-returned-10-000-years-later ; HTML sauvegardé dans /home/lustucru/Documents/vscode/japscanupdatehcapter/src/logs/html_debug/www.japscan.foo_manhwa_player-who-returned-10-000-years-later.html)
+[2026-04-15 09:45:54] ERROR - Aucun chapitre extrait pour https://www.japscan.foo/manga/kage-no-jitsuryokusha-ni-naritakute/ (slug=kage-no-jitsuryokusha-ni-naritakute ; HTML sauvegardé dans /home/lustucru/Documents/vscode/japscanupdatehcapter/src/logs/html_debug/www.japscan.foo_manga_kage-no-jitsuryokusha-ni-naritakute.html)
+[2026-04-15 09:46:09] ERROR - Aucun chapitre extrait pour https://www.japscan.foo/manga/kingdom/ (slug=kingdom ; HTML sauvegardé dans /home/lustucru/Documents/vscode/japscanupdatehcapter/src/logs/html_debug/www.japscan.foo_manga_kingdom.html)
+[2026-04-15 09:46:09] INFO - Alerte Discord envoyée : Parsing Japscan cassé
+[2026-04-15 09:50:44] INFO - Aucun nouveau chapitre trouvé pour https://www.japscan.foo/manhwa/hero-killer/
+[2026-04-15 09:51:00] INFO - Aucun nouveau chapitre trouvé pour https://www.japscan.foo/manga/berserk/
+[2026-04-15 09:51:14] INFO - Aucun nouveau chapitre trouvé pour https://www.japscan.foo/manhwa/player-who-returned-10-000-years-later/
+[2026-04-15 09:51:27] INFO - Aucun nouveau chapitre trouvé pour https://www.japscan.foo/manga/kage-no-jitsuryokusha-ni-naritakute/
+[2026-04-15 09:51:44] INFO - Notification Discord envoyée pour Kingdom
+[2026-04-15 09:51:44] INFO - 1 nouveau(x) chapitre(s) trouvé(s) pour Kingdom (https://www.japscan.foo/manga/kingdom/)
+[2026-04-15 09:53:40] INFO - Notification Discord envoyée pour Hero Killer
+[2026-04-15 09:53:40] INFO - 49 nouveau(x) chapitre(s) trouvé(s) pour Hero Killer (https://www.japscan.foo/manhwa/hero-killer/)
