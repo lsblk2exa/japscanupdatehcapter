@@ -41,6 +41,8 @@ def _sauver_debug(html, url):
 
 
 CHAPITRE_TEXTE_RE = re.compile(r"Chapitre\s+[\d\.]+", re.IGNORECASE)
+# Les leurres ont des numéros avec zéros à gauche (Chapitre 000001), les vrais non.
+LEURRE_NUM_RE = re.compile(r"Chapitre\s+0\d", re.IGNORECASE)
 
 
 def _est_cache(el):
@@ -49,7 +51,15 @@ def _est_cache(el):
     if "d-none" in classes:
         return True
     style = (el.get("style") or "").replace(" ", "").lower()
-    if "-9999px" in style or "display:none" in style or "opacity:0" in style:
+    marqueurs = (
+        "-9999px",
+        "display:none",
+        "opacity:0",
+        "clip-path:circle(0)",
+        "clip-path:inset(100%)",
+        "visibility:hidden",
+    )
+    if any(m in style for m in marqueurs):
         return True
     return False
 
@@ -80,6 +90,8 @@ def _extraire_chapitres(html, slug):
         if not texte or len(texte) > 300:
             continue
         if not CHAPITRE_TEXTE_RE.search(texte):
+            continue
+        if LEURRE_NUM_RE.search(texte):
             continue
 
         url_trouvee = None
