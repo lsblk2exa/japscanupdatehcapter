@@ -8,8 +8,19 @@ def envoyer_discord(manga_nom, chapitres):
     if not chapitres:
         return
 
+    SEUIL_LISTE = 25
+
     if len(chapitres) == 1:
         desc = f"Le **{chapitres[0]['nom']}** est disponible !"
+        lien = chapitres[0]["lien"]
+    elif len(chapitres) > SEUIL_LISTE:
+        # Trop de chapitres pour tenir dans un embed Discord (limite 4096 car).
+        plus_ancien = chapitres[-1]["nom"]
+        plus_recent = chapitres[0]["nom"]
+        desc = (
+            f"**{len(chapitres)} nouveaux chapitres** disponibles !\n"
+            f"Du **{plus_ancien}** au **{plus_recent}**."
+        )
         lien = chapitres[0]["lien"]
     else:
         desc = f" **{len(chapitres)} chapitres sortis !**\n"
